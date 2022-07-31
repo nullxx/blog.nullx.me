@@ -1,0 +1,108 @@
+---
+import BaseHead from "../components/BaseHead.astro";
+import Header from "../components/Header.astro";
+import '../styles/global.css'
+import '../styles/blog.css'
+import '../styles/markdown.css';
+import BackArrow from "../components/BackArrow.astro";
+
+export interface Props {
+	content: {
+		title: string;
+		description: string;
+		publishDate: string;
+		image?: {
+			src: string;
+			alt: string;
+		};
+	};
+}
+
+const contentColumnClass = "ml-10 mr-10 md:ml-44 md:mr-44 lg:ml-80 lg:mr-80";
+
+const {
+	content: { title, description, publishDate, image },
+} = Astro.props as Props;
+
+const publishDateFormated = new Date(publishDate).toLocaleDateString('en-US', { weekday:"long", year:"numeric", month:"short", day:"numeric"}) ;
+---
+
+<html>
+
+<head>
+	<BaseHead title={title} description={description} />
+</head>
+
+<body class="dark:bg-dark-color">
+	<Header />
+	<article class="dark:text-dark-text-color">
+		<header class="mb-0">
+			<BackArrow />
+			{image && (
+			<img class="w-1/2 bg-white rounded-md shadow-lg sm:hidden" loading="lazy" src={image.src} alt={image.alt} />
+			)}
+			<div class={`${contentColumnClass} flex items-center`}>
+				{image && (
+				<img class="w-1/2 bg-white rounded-md shadow-lg hidden sm:block" loading="lazy" src={image.src}
+					alt={image.alt} />
+				)}
+				<div>
+					<h1 class="title">{title}</h1>
+					<p class="text-gray-700 text-base">{description}</p>
+					<time>{publishDateFormated}</time>
+				</div>
+			</div>
+		</header>
+		<main class={`${contentColumnClass} mb-10 markdown-css dark:text-dark-text-color`}>
+			<slot></slot>
+		</main>
+	</article>
+</body>
+
+</html>
+
+<style>
+	img {
+		width: 100vw;
+		object-fit: cover;
+		object-position: center;
+		margin-top: 2rem;
+		margin-bottom: 4rem;
+		max-width: 1280px;
+	}
+
+	@media (max-width: 50em) {
+		img {
+			height: 260px;
+			margin-top: 0;
+			margin-bottom: 2rem;
+		}
+	}
+
+	header {
+		display: flex;
+		flex-direction: column;
+		text-align: center;
+		align-items: center;
+		justify-content: center;
+		gap: 1rem;
+
+		padding-bottom: 2rem;
+		margin-bottom: 2rem;
+		border-bottom: 4px solid var(--theme-divider);
+	}
+
+	.title,
+	time {
+		margin: 0;
+	}
+
+	time {
+		color: var(--theme-text-lighter);
+	}
+
+	.title {
+		font-size: 2.25rem;
+		font-weight: 700;
+	}
+</style>

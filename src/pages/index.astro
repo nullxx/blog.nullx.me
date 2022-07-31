@@ -1,0 +1,65 @@
+---
+import BaseHead from "../components/BaseHead.astro";
+import Header from "../components/Header.astro";
+import BlogPostPreview from "../components/BlogPostPreview.astro";
+import '../styles/global.css'
+import readingTime from 'reading-time';
+import ProjectPreview from "../components/ProjectPreview.astro";
+import GitHub from '../components/GitHub.jsx';
+
+let title = "blog.nullx.me";
+let description = "nullx's blog";
+
+const unsortedPosts = await Astro.glob("./posts/*.md");
+const posts = unsortedPosts.sort(function (a, b) {
+	return (
+		new Date(b.frontmatter.publishDate).valueOf() - new Date(a.frontmatter.publishDate).valueOf()
+	);
+});
+
+const unsortedProjects = await Astro.glob("./projects/*.md");
+const projects = unsortedProjects.sort(function (a, b) {
+	return (
+		new Date(b.frontmatter.date).valueOf() -
+		new Date(a.frontmatter.date).valueOf()
+	);
+});
+
+
+---
+
+<html lang="en">
+
+<head>
+	<BaseHead title={title} description={description} />
+</head>
+
+<body class="m-3 dark:bg-dark-color">
+	<Header />
+	<div class="mt-3 gap-2 block sm:flex">
+		<div class="w-full sm:w-44 lg:w-72">
+			<GitHub client:load />
+		</div>
+		<div class="flex-auto w-full sm:w-64 gap-4">
+			{
+			posts.map((post) => (
+			<BlogPostPreview title={post.frontmatter.title} description={post.frontmatter.description}
+				publishDate={post.frontmatter.publishDate} url={post.url} tags={post.frontmatter.tags}
+				image={post.frontmatter.image} readingTime={readingTime(post.rawContent()).text} />
+			))
+			}
+		</div>
+		<div class="w-full sm:w-44 lg:w-96">
+			<h1 class="mb-2 dark:text-dark-text-color">Projects</h1>
+
+			{projects.map((project) => (
+			<ProjectPreview date={project.frontmatter.date} title={project.frontmatter.title}
+				external={project.frontmatter.external} github={project.frontmatter.github} cover={project.frontmatter.cover}
+				tech={project.frontmatter.tech} url={project.frontmatter.url} content={project.rawContent()} />
+			))
+			}
+		</div>
+	</div>
+</body>
+
+</html>

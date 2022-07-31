@@ -1,0 +1,46 @@
+---
+import '../styles/blog.css'
+
+export interface Props {
+	title: string;
+	description: string;
+	readingTime: string;
+	publishDate: string;
+	url: string;
+	tags: string[];
+	image?: {
+		src: string;
+		alt: string;
+		height?: number;
+		width?: number;
+	};
+}
+
+const { title, description, publishDate, url, tags = [], image, readingTime } = Astro.props as Props;
+const publishDateFormated = new Date(publishDate).toLocaleDateString('en-US', { weekday:"long", year:"numeric", month:"short", day:"numeric"}) ;
+
+---
+
+<div class="post w-full rounded-md overflow-hidden mb-2.5 border-solid border-2">
+	<a href={url}>
+		<div class="px-6 py-4">
+			<div class="post-text font-bold text-xl mb-2 z-[1]">{title}</div>
+			<div class="flex">
+				<p class="post-text text-gray-400 z-[1]">{publishDateFormated}</p>
+				<p class="post-text text-gray-400 z-[1] ml-1 mr-1">•</p>
+				<p class="post-text text-gray-400 z-[1]">{readingTime}</p>
+			</div>
+			<p class="post-text text-gray-700 text-base z-[1]">
+				{description}
+			</p>
+			<img width={image.width ?? '40px' } height={image.height ?? '40px' } class="absolute right-1 top-5 hidden sm:block"
+				loading="lazy" src={image.src} alt={image.alt} />
+		</div>
+		<div class="px-6 pt-4 pb-2">
+			{tags.map((tag) => (
+			<span
+				class="post-text post-item inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2 z-[1]">#{tag}</span>
+			))}
+		</div>
+	</a>
+</div>
