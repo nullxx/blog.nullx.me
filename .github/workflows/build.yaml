@@ -41,7 +41,7 @@ jobs:
              echo "$FILE_CONTENT" > $TEMP_FILE
              yq -i '.image = "${{ secrets.REGISTRY_TAG }}:${{ github.sha }}"' $TEMP_FILE
              cat $TEMP_FILE
-             CONTENT=$(cat $TEMP_FILE | base64)
+             CONTENT=$(cat $TEMP_FILE)
              echo $CONTENT
              DATA=$(echo '{"branch": "master", "author_email": "${{ secrets.GITLAB_AUTHOR_EMAIL }}", "author_name": "${{ secrets.GITLAB_AUTHOR_NAME }}", "content": "", "commit_message": "Update blog.nullx.me to ${{ secrets.REGISTRY_TAG }}:${{ github.sha }}"}' | jq ". | .content = \"$CONTENT\"" | jq -r tostring)
              PUT_RESPONSE=$(curl -s --request PUT --header 'PRIVATE-TOKEN: ${{ secrets.GITLAB_PASSWORD }}' --header "Content-Type: application/json" --data "$DATA" "https://gitlab.com/api/v4/projects/${{ secrets.GITLAB_PROJECT_ID }}/repository/files/blog.nullx.me%2Fvalues.yaml")
