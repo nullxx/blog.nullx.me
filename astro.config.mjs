@@ -1,41 +1,38 @@
 import { defineConfig } from "astro/config";
-import preact from "@astrojs/preact";
-// import remarkToc from 'remark-toc';
+import preact from "@astrojs/preact"; // import remarkToc from 'remark-toc';
 // import astroRemark from'@astrojs/markdown-remark';
+
 import autolinkHeadings from "remark-autolink-headings";
+import turbolinks from "@astrojs/turbolinks";
 
 // https://astro.build/config
 export default defineConfig({
-  integrations: [preact()],
+  integrations: [preact(), turbolinks()],
   site: `https://blog.nullx.me`,
   server: {
     port: 3000,
-    tailwindConfig: "./tailwind.config.js",
+    tailwindConfig: "./tailwind.config.js"
   },
   legacy: {
-    astroFlavoredMarkdown: true,
+    astroFlavoredMarkdown: true
   },
   markdown: {
-	shikiConfig: {
-		theme: 'github-dark',
-		wrap: false,
-	},
-	syntaxHighlight: 'shiki',
-    rehypePlugins: [
-      "rehype-slug",
-      ["rehype-autolink-headings", { behavior: "prepend" }],
-      [
-        "rehype-toc",
-        {
-          headings: ["h1", "h2"], /* only supported h1, h2 */
-          ordered: true,
-          cssClasses: {}
-        },
-      ],
-    ],
-    remarkPlugins: [
-      "remark-code-titles",
-      [autolinkHeadings, { behavior: "prepend" }],
-    ],
-  },
+    shikiConfig: {
+      theme: 'github-dark',
+      wrap: false
+    },
+    syntaxHighlight: 'shiki',
+    rehypePlugins: ["rehype-slug", ["rehype-autolink-headings", {
+      behavior: "prepend"
+    }], ["rehype-toc", {
+      headings: ["h1", "h2"],
+
+      /* only supported h1, h2 */
+      ordered: true,
+      cssClasses: {}
+    }]],
+    remarkPlugins: ["remark-code-titles", [autolinkHeadings, {
+      behavior: "prepend"
+    }]]
+  }
 });
