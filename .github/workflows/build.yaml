@@ -35,6 +35,7 @@ jobs:
             RESPONSE=$(curl --header "PRIVATE-TOKEN: ${{ secrets.GITLAB_PASSWORD }}" "https://gitlab.com/api/v4/projects/${{ secrets.GITLAB_PROJECT_ID }}/repository/files/blog.nullx.me%2Fvalues.yaml?ref=master")
             FILE_CONTENT=$(echo $RESPONSE | jq -r .content | base64 -d)
             export TEMP_FILE=$(mktemp)
+            echo "::set-env name=TEMP_FILE::$TEMP_FILE"
             echo "$FILE_CONTENT" > $TEMP_FILE
 
       -
