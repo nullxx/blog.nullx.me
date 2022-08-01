@@ -30,21 +30,16 @@ jobs:
           tags: ${{ secrets.REGISTRY_TAG }}:${{ github.sha }}
 
       - 
-        name: "[ArgoCd] Download values.yaml"
+        name: "[ArgoCD] Download, edit, and commit changes"
         run: |
-            RESPONSE=$(curl --header "PRIVATE-TOKEN: ${{ secrets.GITLAB_PASSWORD }}" "https://gitlab.com/api/v4/projects/${{ secrets.GITLAB_PROJECT_ID }}/repository/files/blog.nullx.me%2Fvalues.yaml?ref=master")
+            RESPONSE=$(curl -s --header "PRIVATE-TOKEN: ${{ secrets.GITLAB_PASSWORD }}" "https://gitlab.com/api/v4/projects/${{ secrets.GITLAB_PROJECT_ID }}/repository/files/blog.nullx.me%2Fvalues.yaml?ref=master")
             FILE_CONTENT=$(echo $RESPONSE | jq -r .content | base64 -d)
             TEMP_FILE=$(mktemp)
             echo "$FILE_CONTENT" > $TEMP_FILE
             yq -i '.image = "${{ secrets.REGISTRY_TAG }}:${{ github.sha }}"' $TEMP_FILE
             CONTENT=$(cat $TEMP_FILE | base64)
-            PUT_RESPONSE=$(curl --request PUT --header 'PRIVATE-TOKEN: ${{ secrets.GITLAB_PASSWORD }}' --header "Content-Type: application/json" --data '{"branch": "master", "author_email": "${{ secrets.GITLAB_AUTHOR_EMAIL }}", "author_name": "${{ secrets.GITLAB_AUTHOR_NAME }}", "content": "'"$CONTENT"'", "commit_message": "Update blog.nullx.me to ${{ secrets.REGISTRY_TAG }}:${{ github.sha }}"}' "https://gitlab.com/api/v4/projects/${{ secrets.GITLAB_PROJECT_ID }}/repository/files/blog.nullx.me%2Fvalues.yaml")
+            PUT_RESPONSE=$(curl -s --request PUT --header 'PRIVATE-TOKEN: ${{ secrets.GITLAB_PASSWORD }}' --header "Content-Type: application/json" --data '{"branch": "master", "author_email": "${{ secrets.GITLAB_AUTHOR_EMAIL }}", "author_name": "${{ secrets.GITLAB_AUTHOR_NAME }}", "content": "'"$CONTENT"'", "commit_message": "Update blog.nullx.me to ${{ secrets.REGISTRY_TAG }}:${{ github.sha }}"}' "https://gitlab.com/api/v4/projects/${{ secrets.GITLAB_PROJECT_ID }}/repository/files/blog.nullx.me%2Fvalues.yaml")
             echo $PUT_RESPONSE
-
-      -
-        name: "[ArgoCd] Clean up"
-        run: |
-            rm $TEMP_FILE
 
 
             
