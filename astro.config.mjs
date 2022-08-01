@@ -18,7 +18,7 @@ export default defineConfig({
   markdown: {
 	shikiConfig: {
 		theme: 'github-dark',
-		wrap: true,
+		wrap: false,
 	},
 	syntaxHighlight: 'shiki',
     rehypePlugins: [
@@ -27,8 +27,9 @@ export default defineConfig({
       [
         "rehype-toc",
         {
-          headings: ["h1", "h2"],
+          headings: ["h1", "h2"], /* only supported h1, h2 */
           ordered: true,
+          cssClasses: {}
         },
       ],
     ],

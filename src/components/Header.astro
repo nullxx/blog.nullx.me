@@ -15,7 +15,7 @@ import DarkMode from './DarkMode.astro';
 
 <script>
 	var prevScrollpos = window.pageYOffset;
-	window.onscroll = function () {
+	function onScroll() {
 		var currentScrollPos = window.pageYOffset;
 		if (prevScrollpos > currentScrollPos) {
 			document.getElementById("header").classList.toggle("sticky", true);
@@ -24,4 +24,6 @@ import DarkMode from './DarkMode.astro';
 		}
 		prevScrollpos = currentScrollPos;
 	}
+
+	window.addEventListener('scroll', onScroll);
 </script>

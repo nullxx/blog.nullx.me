@@ -86,6 +86,27 @@ body {
 	margin-right: 5px;
 }
 
+.toc {
+	text-align: right;
+	position: fixed;
+	top: 50%;
+	right: 20px;
+	transform: translateY(-50%);
+}
+
+@media screen and (max-width: 1024px) {
+	.toc {
+		display: none;
+	}
+}
+
+.active {
+	/* background-color: #cecece; */
+	font-size: 1.2rem;
+	font-weight: bold;
+}
+
+/* 
 .toc::before {
 	content: "Table of Contents";
 	font-size: 1.5rem;
@@ -100,7 +121,6 @@ body {
 }
 
 .toc {
-    /* background: #f9f9f9 none repeat scroll 0 0; */
     border: 1px solid #aaa;
     display: table;
     font-size: 95%;
@@ -108,9 +128,9 @@ body {
     padding: 20px;
     width: auto;
 	justify-content: center;
-}
+} */
 
-.toc-level-1 {
+/* .toc-level-1 {
 	margin-left: 1em;
 }
 
@@ -120,7 +140,7 @@ body {
 
 .toc-level-3 {
 	margin-left: 3em;
-}
+} */
 
 .astro-code {
 	padding: 10px;
@@ -131,37 +151,37 @@ body {
 
 table {
 	border-radius: 10px;
-    border-collapse: collapse;
-    font-size: 0.9em;
-    font-family: sans-serif;
-    /* min-width: 400px; */
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+	border-collapse: collapse;
+	font-size: 0.9em;
+	font-family: sans-serif;
+	/* min-width: 400px; */
+	box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
 }
 
 table thead tr {
-    background-color: #009879;
-    color: #ffffff;
-    text-align: left;
+	background-color: #009879;
+	color: #ffffff;
+	text-align: left;
 }
 
 table th,
 table td {
-    padding: 12px 15px;
+	padding: 12px 15px;
 }
 
 table tbody tr {
-    border-bottom: 1px solid #dddddd;
+	border-bottom: 1px solid #dddddd;
 }
 
 table tbody tr:nth-of-type(even) {
-    background-color: #f3f3f3;
+	background-color: #f3f3f3;
 }
 
 table tbody tr:last-of-type {
-    border-bottom: 2px solid #009879;
+	border-bottom: 2px solid #009879;
 }
 
 table tbody tr.active-row {
-    font-weight: bold;
-    color: #009879;
+	font-weight: bold;
+	color: #009879;
 }
