@@ -43,7 +43,7 @@ jobs:
              cat $TEMP_FILE
              CONTENT=$(cat $TEMP_FILE | base64)
              echo $CONTENT
-             PUT_RESPONSE=$(curl -s --request PUT --header 'PRIVATE-TOKEN: ${{ secrets.GITLAB_PASSWORD }}' --header "Content-Type: application/json" --data '{"branch": "master", "author_email": "${{ secrets.GITLAB_AUTHOR_EMAIL }}", "author_name": "${{ secrets.GITLAB_AUTHOR_NAME }}", "content": "'"$CONTENT"'", "commit_message": "Update blog.nullx.me to ${{ secrets.REGISTRY_TAG }}:${{ github.sha }}"}' "https://gitlab.com/api/v4/projects/${{ secrets.GITLAB_PROJECT_ID }}/repository/files/blog.nullx.me%2Fvalues.yaml")
+             PUT_RESPONSE=$(curl -s --request PUT --header 'PRIVATE-TOKEN: ${{ secrets.GITLAB_PASSWORD }}' --header "Content-Type: application/json" --data '{"branch": "master", "author_email": "${{ secrets.GITLAB_AUTHOR_EMAIL }}", "author_name": "${{ secrets.GITLAB_AUTHOR_NAME }}", "content": "`echo $CONTENT`", "commit_message": "Update blog.nullx.me to ${{ secrets.REGISTRY_TAG }}:${{ github.sha }}"}' "https://gitlab.com/api/v4/projects/${{ secrets.GITLAB_PROJECT_ID }}/repository/files/blog.nullx.me%2Fvalues.yaml")
              echo $PUT_RESPONSE
 
 
