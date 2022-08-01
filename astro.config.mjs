@@ -3,11 +3,10 @@ import preact from "@astrojs/preact"; // import remarkToc from 'remark-toc';
 // import astroRemark from'@astrojs/markdown-remark';
 
 import autolinkHeadings from "remark-autolink-headings";
-import turbolinks from "@astrojs/turbolinks";
 
 // https://astro.build/config
 export default defineConfig({
-  integrations: [preact(), turbolinks()],
+  integrations: [preact()],
   site: `https://blog.nullx.me`,
   server: {
     port: 3000,
