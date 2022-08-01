@@ -7,8 +7,6 @@ on:
 
 jobs:
   docker:
-    env:
-      ACTIONS_ALLOW_UNSECURE_COMMANDS: true
     runs-on: ubuntu-latest
     steps:
       -
@@ -36,19 +34,9 @@ jobs:
         run: |
             RESPONSE=$(curl --header "PRIVATE-TOKEN: ${{ secrets.GITLAB_PASSWORD }}" "https://gitlab.com/api/v4/projects/${{ secrets.GITLAB_PROJECT_ID }}/repository/files/blog.nullx.me%2Fvalues.yaml?ref=master")
             FILE_CONTENT=$(echo $RESPONSE | jq -r .content | base64 -d)
-            export TEMP_FILE=$(mktemp)
-            echo "::set-env name=TEMP_FILE::$TEMP_FILE"
+            TEMP_FILE=$(mktemp)
             echo "$FILE_CONTENT" > $TEMP_FILE
-
-      -
-        name: "[ArgoCd] Edit values.yaml"
-        uses: mikefarah/yq@master
-        with:
-          cmd: yq -i '.image = "${{ secrets.REGISTRY_TAG }}:${{ github.sha }}"' $TEMP_FILE
-
-      - 
-        name: "[ArgoCd] Upload values.yaml"
-        run: |
+            yq -i '.image = "${{ secrets.REGISTRY_TAG }}:${{ github.sha }}"' $TEMP_FILE
             CONTENT=$(cat $TEMP_FILE | base64)
             PUT_RESPONSE=$(curl --request PUT --header 'PRIVATE-TOKEN: ${{ secrets.GITLAB_PASSWORD }}' --header "Content-Type: application/json" --data '{"branch": "master", "author_email": "${{ secrets.GITLAB_AUTHOR_EMAIL }}", "author_name": "${{ secrets.GITLAB_AUTHOR_NAME }}", "content": "'"$CONTENT"'", "commit_message": "Update blog.nullx.me to ${{ secrets.REGISTRY_TAG }}:${{ github.sha }}"}' "https://gitlab.com/api/v4/projects/${{ secrets.GITLAB_PROJECT_ID }}/repository/files/blog.nullx.me%2Fvalues.yaml")
             echo $PUT_RESPONSE
