@@ -5,12 +5,14 @@ import '../styles/global.css'
 import '../styles/blog.css'
 import '../styles/markdown.css';
 import BackArrow from "../components/BackArrow.astro";
+import readingTime from 'reading-time';
 
 export interface Props {
 	content: {
 		title: string;
 		description: string;
 		publishDate: string;
+		astro: Record<string, any>;
 		image?: {
 			src: string;
 			alt: string;
@@ -21,10 +23,11 @@ export interface Props {
 const contentColumnClass = "ml-10 mr-10 md:ml-44 md:mr-44 lg:ml-80 lg:mr-80";
 
 const {
-	content: { title, description, publishDate, image },
+	content: { title, description, publishDate, image, astro },
 } = Astro.props as Props;
 
-const publishDateFormated = new Date(publishDate).toLocaleDateString('en-US', { weekday: "long", year: "numeric", month: "short", day: "numeric" });
+const publishDateFormated = new Date(publishDate).toLocaleDateString('en-EN', { weekday: "long", year: "numeric", month: "short", day: "numeric" });
+const readTime = readingTime(astro.html).text;
 ---
 
 <html>
@@ -50,7 +53,11 @@ const publishDateFormated = new Date(publishDate).toLocaleDateString('en-US', { 
 				<div>
 					<h1 class="title">{title}</h1>
 					<p class="text-gray-700 text-base">{description}</p>
-					<time>{publishDateFormated}</time>
+					<div class="flex justify-center">
+						<time>{publishDateFormated}</time>
+						<p class="post-text text-gray-400 z-[1] ml-1 mr-1">•</p>
+						<p class="text-gray-700 text-base">{readTime}</p>
+					</div>
 				</div>
 			</div>
 		</header>
@@ -71,15 +78,6 @@ const publishDateFormated = new Date(publishDate).toLocaleDateString('en-US', { 
 		margin-bottom: 4rem;
 		max-width: 1280px;
 	}
-
-	@media (max-width: 50em) {
-		img {
-			height: 260px;
-			margin-top: 0;
-			margin-bottom: 2rem;
-		}
-	}
-
 	header {
 		display: flex;
 		flex-direction: column;
@@ -102,10 +100,6 @@ const publishDateFormated = new Date(publishDate).toLocaleDateString('en-US', { 
 		color: var(--theme-text-lighter);
 	}
 
-	.title {
-		font-size: 2.25rem;
-		font-weight: 700;
-	}
 </style>
 
 <script>
