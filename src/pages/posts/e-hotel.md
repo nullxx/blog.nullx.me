@@ -1,0 +1,59 @@
+---
+layout: "../../layouts/BlogPost.astro"
+title: "Registro apartamentos turísticos"
+description: "Posible solución para el registro de apartamentos turísticos en España."
+publishDate: "2022-08-02"
+tags: [spanish, apartamentos turísticos, html, css, javascript]
+image:
+  src: "/assets/posts/e-hotel/images/airbnb.webp"
+  alt: "Airbnb"
+  height: "auto"
+  width: "100px"
+---
+
+# Apartamentos turísticos
+En España cuando se alquila un apartamento vacacional, existe un cauce legal y correcto el está definido en la <a href="https://www.boe.es/buscar/act.php?id=BOE-A-2015-3442" target="_blanc">Ley Orgánica de Protección de la Seguridad Ciudadana del 30 de marzo de 2015</a>.
+
+Según esta ley, los propietarios de los apartamentos turísticos deben informar mediante partes de viajeros la actividad de los mismos. Esto puede hacerse de manera presencial rellenando un formulario o mediante una web habilitada para este fin.
+
+![Web e-hotel](/assets/posts/e-hotel/images/login.svg)
+
+# Compatibilidad
+
+La web anteriormente mencionada está desarrollada en puro html, css y javascript. Es por esto y por desconocimiento de nuevas apis y actualizaciones que la compatibilidad con los navegadores móviles es nula; tras introducir los datos del login y acceder al formulario de _parte del viajero_ el usuario es redirigido al login indicando que la sesión ha caducado.
+
+Una experiencia un tanto complicada pero que no llego a comprender ya que es una web unicamente dedicada a guardar datos y no debería de haber complejidad alguna.
+
+# Cómo funciona
+
+La autenticación se realiza mediante **cookies** y un **token** `_csrf` que se genera al entrar a la web por primera vez.
+
+<!-- ![Autenticación _csrf](/assets/posts/e-hotel/images/_csrf.png) -->
+
+```html
+<form id="loginForm" name="loginForm" action="/e-hotel/execute_login" method="POST">
+    <!-- ... -->
+    <input type="hidden" name="_csrf" value="b740b19f-3673-497f-b37d-1aa8f82b42e4">
+</form>
+```
+
+## 1. Extracción del `_csrf`
+
+```js
+const _csrf = htmlParser.parse(body).querySelector('input[name="_csrf"]').attrs.value;
+```
+
+## 2. Extracción las cookies
+
+Hay que extraer las cookies de la **respuesta** de la web.
+
+```js
+const response = await instance.get("/login");
+const body = response.data;
+const cookies = response.headers["set-cookie"];
+const cookiesStr = cookies.join("; "); // cookiesession1=678B28A508F1BC790C3F4A51382F2F61; UqZBpD3n3iHPAgNS9Fnn5SbNcvsF5IlbdcvFr4ieqh8_=v1DNo0JbgW4rv; FRONTAL_JSESSIONID=fkNbwOG5j3NmSDGj87e8fbvn6MTKz3j90YpYgf0MB5Mx4X7a7YPc!-1379780343
+```
+
+# Posible solución
+Se podría crear una web 'wrapper' que se encargue de la autenticación y de la extracción de las cookies y que haga de intermediario entre la web oficial y el usuario. Esta web 'wrapper' sería compatible con los navegadores móviles por lo que se **eliminaria el defecto de la web oficial**.
+<img src="/assets/posts/e-hotel/images/alternative.svg" alt="Alternative" width="300"/>
