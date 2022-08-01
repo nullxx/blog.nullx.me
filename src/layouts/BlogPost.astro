@@ -39,7 +39,7 @@ const publishDateFormated = new Date(publishDate).toLocaleDateString('en-US', { 
 		<header class="mb-0">
 			<BackArrow />
 			{image && (
-			<img class="w-1/2 bg-white rounded-md shadow-lg sm:hidden" loading="lazy" src={image.src} alt={image.alt} />
+			<img class="aspect-auto w-4/5 bg-white rounded-md shadow-lg sm:hidden" loading="lazy" src={image.src} alt={image.alt} />
 			)}
 			<div class={`${contentColumnClass} flex items-center`}>
 				{image && (
