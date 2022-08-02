@@ -16,7 +16,7 @@ En España cuando se alquila un apartamento vacacional, existe un cauce legal y 
 
 Según esta ley, los propietarios de los apartamentos turísticos deben informar mediante partes de viajeros la actividad de los mismos. Esto puede hacerse de manera presencial rellenando un formulario o mediante una web habilitada para este fin.
 
-![Web e-hotel](/assets/posts/e-hotel/images/login.svg)
+![Web e-hotel](/assets/posts/e-hotel/images/login.png)
 
 # Compatibilidad
 
@@ -56,4 +56,4 @@ const cookiesStr = cookies.join("; "); // cookiesession1=678B28A508F1BC790C3F4A5
 
 # Posible solución
 Se podría crear una web 'wrapper' que se encargue de la autenticación y de la extracción de las cookies y que haga de intermediario entre la web oficial y el usuario. Esta web 'wrapper' sería compatible con los navegadores móviles por lo que se **eliminaria el defecto de la web oficial**.
-<img src="/assets/posts/e-hotel/images/alternative.svg" alt="Alternative" width="300"/>
+<img src="/assets/posts/e-hotel/images/alternative.png" alt="Alternative" width="300"/>
