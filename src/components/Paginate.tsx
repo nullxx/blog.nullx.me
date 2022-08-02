@@ -6,18 +6,17 @@ export interface Props {
 
 export default function Paginate({ pageCount, currentPage, onChange }: Props) {
   const hasPrev = currentPage > 1;
-  const hasNext = currentPage < pageCount - 1;
+  const hasNext = currentPage < pageCount;
 
-  if (!hasPrev && !hasNext) return null;
   return (
     <div>
       <nav
-        class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px"
+        class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px mb-1"
         aria-label="Pagination"
       >
         {hasPrev && (
-          <a
-            href="#"
+          <button
+            onClick={() => onChange(currentPage - 1)}
             class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
           >
             <span class="sr-only">Previous</span>
@@ -34,28 +33,12 @@ export default function Paginate({ pageCount, currentPage, onChange }: Props) {
                 clip-rule="evenodd"
               />
             </svg>
-          </a>
+          </button>
         )}
 
-        {Array(pageCount)
-          .fill(0)
-          .map((_, index) => (
-            <a
-              href="#"
-              class={
-                index === currentPage
-                  ? "z-10 bg-indigo-50 border-indigo-500 text-indigo-600 relative inline-flex items-center px-4 py-2 border text-sm font-medium"
-                  : "bg-white border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium"
-              }
-              onClick={() => onChange(index + 1)}
-            >
-              {index + 1}
-            </a>
-          ))}
-
         {hasNext && (
-          <a
-            href="#"
+          <button
+            onClick={() => onChange(currentPage + 1)}
             class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
           >
             <span class="sr-only">Next</span>
@@ -73,7 +56,7 @@ export default function Paginate({ pageCount, currentPage, onChange }: Props) {
                 clip-rule="evenodd"
               />
             </svg>
-          </a>
+          </button>
         )}
       </nav>
     </div>

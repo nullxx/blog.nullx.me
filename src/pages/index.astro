@@ -4,9 +4,9 @@ import Header from "../components/Header.astro";
 import BlogPostPreview from "../components/BlogPostPreview.astro";
 import '../styles/global.css'
 import readingTime from 'reading-time';
-import ProjectPreview from "../components/ProjectPreview.astro";
 import GitHub from '../components/GitHub.jsx';
 import Analytics from "../components/Analytics.astro";
+import Projects from "../components/Projects";
 
 let title = "blog.nullx.me";
 let description = "nullx's blog";
@@ -18,13 +18,16 @@ const posts = unsortedPosts.sort(function (a, b) {
 	);
 });
 
-const unsortedProjects = await Astro.glob("./projects/*.md");
-const projects = unsortedProjects.sort(function (a, b) {
-	return (
-		new Date(b.frontmatter.date).valueOf() -
-		new Date(a.frontmatter.date).valueOf()
-	);
-});
+const unsortedProjects = (await Astro.glob("./projects/*.md")).map((p) => ({
+	date: p.frontmatter.date,
+	title: p.frontmatter.title,
+	external: p.frontmatter.external,
+	github: p.frontmatter.github,
+	cover: p.frontmatter.cover,
+	tech: p.frontmatter.tech,
+	url: p.url,
+	content: p.rawContent(),
+}))
 
 
 ---
@@ -52,14 +55,7 @@ const projects = unsortedProjects.sort(function (a, b) {
 			}
 		</div>
 		<div class="w-full sm:w-44 lg:w-96">
-			<h1 class="mb-2 dark:text-dark-text-color">Projects</h1>
-
-			{projects.map((project) => (
-			<ProjectPreview date={project.frontmatter.date} title={project.frontmatter.title}
-				external={project.frontmatter.external} github={project.frontmatter.github} cover={project.frontmatter.cover}
-				tech={project.frontmatter.tech} url={project.frontmatter.url} content={project.rawContent()} />
-			))
-			}
+			<Projects unsortedProjects={unsortedProjects} client:load />
 		</div>
 	</div>
 </body>
