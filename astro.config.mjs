@@ -4,9 +4,11 @@ import preact from "@astrojs/preact"; // import remarkToc from 'remark-toc';
 
 import autolinkHeadings from "remark-autolink-headings";
 
+import sitemap from "@astrojs/sitemap";
+
 // https://astro.build/config
 export default defineConfig({
-  integrations: [preact()],
+  integrations: [preact(), sitemap()],
   site: `https://blog.nullx.me`,
   server: {
     port: 3000,
