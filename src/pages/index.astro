@@ -6,6 +6,7 @@ import '../styles/global.css'
 import readingTime from 'reading-time';
 import ProjectPreview from "../components/ProjectPreview.astro";
 import GitHub from '../components/GitHub.jsx';
+import Analytics from "../components/Analytics.astro";
 
 let title = "blog.nullx.me";
 let description = "nullx's blog";
@@ -32,6 +33,7 @@ const projects = unsortedProjects.sort(function (a, b) {
 
 <head>
 	<BaseHead title={title} description={description} />
+	<Analytics />
 </head>
 
 <body class="m-3 dark:bg-dark-color">

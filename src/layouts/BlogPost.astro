@@ -6,6 +6,7 @@ import '../styles/blog.css'
 import '../styles/markdown.css';
 import BackArrow from "../components/BackArrow.astro";
 import readingTime from 'reading-time';
+import Analytics from "../components/Analytics.astro";
 
 export interface Props {
 	content: {
@@ -34,6 +35,7 @@ const readTime = readingTime(astro.html).text;
 
 <head>
 	<BaseHead title={title} description={description} />
+	<Analytics />
 </head>
 
 <body class="dark:bg-dark-color">
