@@ -9,6 +9,8 @@ image:
   alt: "Cluster of Raspberry Pi 4B"
   height: "180px"
   width: "180px"
+setup: |
+  import GithubLink from "../../components/md/GithubLink.astro"
 ---
 
 I love decentralized computing. It’s beautiful. Just add a node to your cluster if you need more power! Just that. Restart the pods with no downtime, horizontal pod autoscaler...
@@ -21,12 +23,12 @@ I prefer to create my own mini cluster. My cluster is made of 6 raspberry pi 4B 
 ![Cluster preview](https://i.ibb.co/VwftyjW/IMG-6147.jpg)
 </center>
 
-I created a simple gui tool to generate the linux images to flash into the mini-SD cards with the initial cloudconfig. You can check it here: https://github.com/nullxx/clusperry-installer.
+I created a simple gui tool to generate the linux images to flash into the mini-SD cards with the initial cloudconfig. You can check it here: 
 
-
+<GithubLink url="https://github.com/nullxx/clusperry-installer" name="Clusperry Installer"/>
 
 # Nodes setup
-Download the release from https://github.com/nullxx/clusperry-installer/releases/ (its currently only compiled for macOS)
+Download the release from [https://github.com/nullxx/clusperry-installer/releases/](https://github.com/nullxx/clusperry-installer/releases/) (its currently only compiled for macOS)
 
 
 
@@ -63,9 +65,9 @@ Download the release from https://github.com/nullxx/clusperry-installer/releases
 # Install kubernetes with [k3s](https://k3s.io/)
 
 For this I will use ansible. It makes it easier to do all the install work.
-I will use the following repo: https://github.com/k3s-io/k3s-ansible
+I will use the following repo: 
 
-
+<GithubLink url="https://github.com/k3s-io/k3s-ansible" name="K3s ansible"/>
 
 ### Clone the repo
 ```bash

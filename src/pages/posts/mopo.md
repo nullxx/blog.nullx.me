@@ -8,14 +8,11 @@ image:
   src: "/assets/posts/mopo/images/icon.svg"
   alt: "ICON"
   height: "50px"
+setup: |
+  import GithubLink from "../../components/md/GithubLink.astro"
 ---
 
-<center>
-<a href="https://github.com/rebellionpay/mopo">
-<img src="https://cdn-icons-png.flaticon.com/512/25/25231.png" style="max-width: 50px;" />
-<p>Open Source</p>
-</a>
-</center>
+<GithubLink url="https://github.com/rebellionpay/mopo" name="Open source"/>
 
 # Why would you want to replicate a database?
 
@@ -137,9 +134,4 @@ dist/index.js --start .mopo.json --listen-only users --log-level verbose --stric
 
 # Visit the github repository
 
-<center>
-<a href="https://github.com/rebellionpay/mopo">
-<img src="https://cdn-icons-png.flaticon.com/512/25/25231.png" style="max-width: 50px;" />
-<p>Open Source</p>
-</a>
-</center>
+<GithubLink url="https://github.com/rebellionpay/mopo" name="Open source"/>

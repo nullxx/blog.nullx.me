@@ -7,14 +7,11 @@ tags: [spanish, m++, simulator]
 image:
   src: "https://mpp.nullx.me/static/media/icon.826c02d40cfe921562c5.png"
   alt: "CPU"
+setup: |
+  import GithubLink from "../../components/md/GithubLink.astro"
 ---
 
-<center>
-<a href="https://github.com/nullxx/mpp">
-<img src="https://cdn-icons-png.flaticon.com/512/25/25231.png" style="max-width: 50px;" />
-<p>Open Source</p>
-</a>
-</center>
+<GithubLink url="https://github.com/nullxx/mpp" name="Open source"/>
 
 ## Introduction
 Se trata de un simple, rapido, y potente simulador para la [M++](https://web.archive.org/web/20170518104216/http://paginaspersonales.deusto.es/zubia/)
