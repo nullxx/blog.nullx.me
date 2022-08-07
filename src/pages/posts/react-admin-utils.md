@@ -1,0 +1,209 @@
+---
+layout: "../../layouts/BlogPost.astro"
+title: "React Admin Utils [Part 1]"
+description: "Collection of useful functions for processing calls from react-admin in nodejs with sequelize."
+publishDate: "2022-08-07"
+tags: []
+image:
+  src: "/assets/posts/react-admin-utils/images/react-admin-logo.png"
+  alt: "Airbnb"
+  height: "auto"
+  width: "100px"
+---
+
+React Admin is a frontend Framework for building data-driven applications running in the browser, on top of REST/GraphQL APIs, using React and Material Design.
+
+React Admin is very useful to build a backoffice for your application because it provides nearly all the features you need.
+
+So React Admin does API calls to out backend, and then it returns the data to the frontend. Those calls have some standard request parameters and responses the backender needs to follow.
+
+Basically it does three things:
+- list: a collection of items
+- show: a single item
+- edit: a form to edit an item
+- create: a form to create an item
+
+# List
+
+<img src="/assets/posts/react-admin-utils/images/list.png" alt="List example">
+
+As you can see in the bottom right of the image, the list is a table with pagination. The user can choose the number of items per page and the current page. This is traslated to the following query parameters that are sent into the backend:
+- _end
+- _start
+
+Also the user can sort the list by clicking on the column headers. This is translated to the following query parameters that are sent into the backend:
+- _sort
+- _order
+
+The perfect way would be to have a general function to wrap all this functionality and generate the correct input for the request to the database.
+
+That is what I tried to do here.
+
+**Note:** I am not very proud of this code, but I am trying to make it as simple as possible.
+
+```typescript
+import { Model } from "@sequelize/core";
+import type { Attributes, FindOptions, WhereOptions } from "@sequelize/core";
+import type { Request } from "express";
+
+export function getPaginateOptions<T extends Model>(
+  request: Request,
+  defaultStart = 0,
+  defaultEnd = 10,
+  defaultOrder: "ASC" | "DESC" | "NULLS FIRST" = "ASC",
+  defaultSort: keyof Attributes<T & { id: string }> = "id"
+): Partial<FindOptions<Attributes<T>>> {
+  const query = request.query as ExpressQuery<Attributes<T>>;
+  const _end = Number(query._end) || defaultEnd;
+  const _start = Number(query._start) || defaultStart;
+  const _sort = (query._sort || defaultSort) as string;
+  const _order = (query._order || defaultOrder) as string;
+
+  return {
+    offset: _start,
+    limit: _end - _start,
+    order: [[_sort, _order]],
+  };
+}
+```
+
+The usage of the function is as follows:
+
+```typescript
+const pgOpts = getPaginateOptions<Table>(req);
+
+const { count, rows } = await Table.findAndCountAll({
+      ...pgOpts,
+});
+```
+
+# Edit
+
+<img src="/assets/posts/react-admin-utils/images/edit.png" alt="Edit example">
+
+When editing the login thing would be:
+```typescript
+const { body } = req;
+
+const obj = {};
+
+if (body.email) {
+  obj.email = body.email;
+}
+
+if (body.fullname) {
+  obj.fullName = body.fullName;
+}
+
+// . . .
+```
+
+This is very anying and it will be a repeating task for every table.
+Also sometimes you only want to allow some attributes to be modified. It can be done like the following:
+
+```typescript
+import { Model } from "@sequelize/core";
+import type { Attributes, FindOptions, WhereOptions } from "@sequelize/core";
+import type { Request } from "express";
+
+export function getEditAttr<T extends Model>(
+  request: Request,
+  fields: (keyof Attributes<T>)[]
+): Partial<Attributes<T>> {
+  const body: Record<
+    keyof Attributes<T>,
+    Partial<Attributes<T>>[keyof Attributes<T>]
+  > = request.body;
+
+  const props: Partial<Attributes<T>> = {};
+  for (const field of fields) {
+    if (body[field] !== undefined) {
+      props[field] = body[field];
+    }
+  }
+  return props;
+}
+```
+
+The usage:
+```typescript
+const user = await User.findByPk(req.params.id);
+
+const updateObj = getEditAttr<User>(req, [
+    "fullName",
+    "email",
+    "tier",
+]);
+
+await user.update(updateObj);
+```
+
+# Filters
+
+On the list you could filter by a field, e.g. email, fullName...
+
+This function maps the rows of the table from the query. This filter is strict.
+```typescript
+export function getWhereOptionsStrict<T extends Model>(
+  req: Request,
+  fields: (keyof Attributes<T>)[]
+): Partial<Attributes<T>> {
+  const query = req.query as ExpressQuery<T>;
+  const filteredQuery: Partial<Attributes<T>> = {};
+
+  for (const field of fields) {
+    if (query[field] !== undefined) {
+      filteredQuery[field] = query[field];
+    }
+  }
+
+  return filteredQuery;
+}
+```
+
+The following is soft: 
+
+```typescript
+export function getWhereOptionsSoft<T extends Model>(
+  req: Request,
+  fields: (keyof Attributes<T>)[]
+): WhereOptions<T> {
+  const strictWhere = getWhereOptionsStrict<T>(req, fields);
+  const similarWhere: Attributes<T> = {};
+
+  for (const field of fields) {
+    if (strictWhere[field] === undefined) continue;
+
+    if (Array.isArray(strictWhere[field])) {
+      similarWhere[field] = { [Op.or]: strictWhere[field] };
+    } else if (isBoolean(strictWhere[field].toString())) {
+      similarWhere[field] = parseBoolean(strictWhere[field].toString());
+    } else {
+      similarWhere[field] = {
+        [Op.like]: `%${strictWhere[field]}%`,
+      };
+    }
+  }
+
+  return similarWhere;
+}
+```
+
+The usage: 
+
+```typescript
+const where = getWhereOptionsSoft<Table>(req, [
+  "id",
+  "priority",
+  "key",
+  "message",
+  "isSolved",
+  "additionalInfo",
+]);
+
+const { count, rows } = await Table.findAndCountAll({
+    where,
+});
+```
+
+## Hope it helps!

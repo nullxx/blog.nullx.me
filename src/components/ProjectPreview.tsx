@@ -67,7 +67,7 @@ export default function ({
           )}
         </div>
         <p class="text-gray-400 z-[1]">{publishDateFormated}</p>
-        <img loading="lazy" src={cover} />
+        {cover && <img loading="lazy" src={cover} alt="Cover" />}
         <p class="text-gray-700 text-base z-[1] mt-3">{content}</p>
       </div>
       <div class="px-6 pt-4 pb-2">
