@@ -1,5 +1,5 @@
 ---
-layout: "../../layouts/BlogPost.astro"
+layout: "../../layouts/MainLayout.astro"
 title: "Persistent storage for raspberry pi k8s cluster"
 description: "Persisten storage for k8s cluster (k3s installation)"
 publishDate: "2021-05-07"
@@ -8,9 +8,8 @@ image:
   src: "https://res.cloudinary.com/practicaldev/image/fetch/s--QLcvkgWw--/c_imagga_scale,f_auto,fl_progressive,h_420,q_auto,w_1000/https://dev-to-uploads.s3.amazonaws.com/uploads/articles/jv818ju90uzeveajry5h.png"
   alt: "GlusterFS"
   width: "200px"
-setup: |
-  import "../../styles/global.css"
 ---
+
 As I said in the last post, I installed kubernetes with the k3s tool.
 
 It's cool to deploy stateless applications, but when you need something more complex, **you'll need a persistent volume**.
@@ -58,7 +57,7 @@ I tried to mount a GlusterFS directly with k8s drivers but I could't make it wor
 </table>
 
 #### Ansible
-```ini:hosts.ini
+```ini live
 [master]
 192.168.1.100
 
@@ -162,7 +161,7 @@ ansible all -i hosts.ini -a "mount -t glusterfs 192.168.1.100:/brick1 /mnt/gener
 ### Mount on reboot
 * `/root/mount-volumes.sh`: create this file in all slaves nodes
 
-```bash:/root/mount-volumes.sh
+```bash
 #!/bin/sh
 
 function check_glusterd_running()

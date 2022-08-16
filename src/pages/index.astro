@@ -1,17 +1,18 @@
 ---
 import BaseHead from "../components/BaseHead.astro";
-import Header from "../components/Header.astro";
+import Header from "../components/Header/Header.astro";
 import BlogPostPreview from "../components/BlogPostPreview.astro";
 import '../styles/global.css'
 import readingTime from 'reading-time';
 import GitHub from '../components/GitHub.jsx';
 import Analytics from "../components/Analytics.astro";
 import Projects from "../components/Projects";
+import HeadCommon from "../components/HeadCommon.astro";
 
 let title = "blog.nullx.me";
 let description = "nullx's blog";
 
-const unsortedPosts = await Astro.glob("./posts/*.md");
+const unsortedPosts = await Astro.glob("./posts/*.mdx");
 const posts = unsortedPosts.sort(function (a, b) {
 	return (
 		new Date(b.frontmatter.publishDate).valueOf() - new Date(a.frontmatter.publishDate).valueOf()
@@ -50,7 +51,7 @@ const unsortedProjects = (await Astro.glob("./projects/*.md")).map((p) => ({
 			posts.map((post) => (
 			<BlogPostPreview title={post.frontmatter.title} description={post.frontmatter.description}
 				publishDate={post.frontmatter.publishDate} url={post.url} tags={post.frontmatter.tags}
-				image={post.frontmatter.image} readingTime={readingTime(post.rawContent()).text} />
+				image={post.frontmatter.image} readingTime={readingTime('').text} />
 			))
 			}
 		</div>

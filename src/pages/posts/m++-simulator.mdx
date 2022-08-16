@@ -1,5 +1,5 @@
 ---
-layout: "../../layouts/BlogPost.astro"
+layout: "../../layouts/MainLayout.astro"
 title: "M++ simulator"
 description: "Simulador hecho desde cero partiendo del diseño teórico de 'La Maquina plus plus'"
 publishDate: "2022-06-06"
@@ -7,9 +7,8 @@ tags: [spanish, m++, simulator]
 image:
   src: "https://mpp.nullx.me/static/media/icon.826c02d40cfe921562c5.png"
   alt: "CPU"
-setup: |
-  import GithubLink from "../../components/md/GithubLink.astro"
 ---
+import GithubLink from "../../components/md/GithubLink.astro";
 
 <GithubLink url="https://github.com/nullxx/mpp" name="Open source"/>
 

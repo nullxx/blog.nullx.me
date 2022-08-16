@@ -1,5 +1,6 @@
+/* jsxImportSource: astro */
 import "../styles/blog.css";
-
+import * as React from "preact";
 export interface Project {
   date: string;
   title: string;

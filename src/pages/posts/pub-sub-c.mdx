@@ -1,5 +1,5 @@
 ---
-layout: "../../layouts/BlogPost.astro"
+layout: "../../layouts/MainLayout.astro"
 title: "Pub/Sub: C implementation"
 description: "C implementation of the Pub/Sub protocol"
 publishDate: "2022-03-22"
@@ -83,7 +83,7 @@ int publish_message_to(PubSubTopic topic, void *value) {
 }
 ```
 
-```c:pubsub.h
+```c
 //
 //  pubsub.h
 //  mpp-cpu

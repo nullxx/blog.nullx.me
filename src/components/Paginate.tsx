@@ -1,3 +1,5 @@
+import * as React from 'preact';
+
 export interface Props {
   pageCount: number;
   currentPage: number;

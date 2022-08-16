@@ -1,5 +1,5 @@
 ---
-layout: "../../layouts/BlogPost.astro"
+layout: "../../layouts/MainLayout.astro"
 title: "Registro apartamentos turísticos"
 description: "Posible solución para el registro de apartamentos turísticos en España."
 publishDate: "2022-08-02"
@@ -28,7 +28,6 @@ Una experiencia un tanto complicada pero que no llego a comprender ya que es una
 
 La autenticación se realiza mediante **cookies** y un **token** `_csrf` que se genera al entrar a la web por primera vez.
 
-<!-- ![Autenticación _csrf](/assets/posts/e-hotel/images/_csrf.png) -->
 
 ```html
 <form id="loginForm" name="loginForm" action="/e-hotel/execute_login" method="POST">

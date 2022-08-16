@@ -1,5 +1,5 @@
 ---
-layout: "../../layouts/BlogPost.astro"
+layout: "../../layouts/MainLayout.astro"
 title: "React Admin Utils [Part 1]"
 description: "Collection of useful functions for processing calls from react-admin in nodejs with sequelize."
 publishDate: "2022-08-07"
@@ -23,9 +23,9 @@ Basically it does three things:
 - edit: a form to edit an item
 - create: a form to create an item
 
-# List
+## List
 
-<img src="/assets/posts/react-admin-utils/images/list.png" alt="List example">
+<img src="/assets/posts/react-admin-utils/images/list.png" alt="List example" />
 
 As you can see in the bottom right of the image, the list is a table with pagination. The user can choose the number of items per page and the current page. This is traslated to the following query parameters that are sent into the backend:
 - _end
@@ -77,9 +77,9 @@ const { count, rows } = await Table.findAndCountAll({
 });
 ```
 
-# Edit
+## Edit
 
-<img src="/assets/posts/react-admin-utils/images/edit.png" alt="Edit example">
+<img src="/assets/posts/react-admin-utils/images/edit.png" alt="Edit example" />
 
 When editing the login thing would be:
 ```typescript
@@ -138,7 +138,7 @@ const updateObj = getEditAttr<User>(req, [
 await user.update(updateObj);
 ```
 
-# Filters
+## Filters
 
 On the list you could filter by a field, e.g. email, fullName...
 

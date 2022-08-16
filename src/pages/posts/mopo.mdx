@@ -1,5 +1,5 @@
 ---
-layout: "../../layouts/BlogPost.astro"
+layout: "../../layouts/MainLayout.astro"
 title: "Replicate MongoDB to PostgreSQL in real time"
 description: "The creation of a CLI tool to replicate MongoDB to PostgreSQL in real time"
 publishDate: "2022-08-01"
@@ -8,9 +8,8 @@ image:
   src: "/assets/posts/mopo/images/icon.svg"
   alt: "ICON"
   height: "50px"
-setup: |
-  import GithubLink from "../../components/md/GithubLink.astro"
 ---
+import GithubLink from "../../components/md/GithubLink.astro";
 
 <GithubLink url="https://github.com/rebellionpay/mopo" name="Open source"/>
 
@@ -52,7 +51,7 @@ enum MongoOperation {
 
 ## Example configuration
 
-```json:.mopo.json
+```json
 {
   "mongo": {
     "connection": {
