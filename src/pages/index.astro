@@ -2,9 +2,9 @@
 import BaseHead from "../components/BaseHead.astro";
 import Header from "../components/Header/Header.astro";
 import BlogPostPreview from "../components/BlogPostPreview.astro";
-import '../styles/global.css'
-import readingTime from 'reading-time';
-import GitHub from '../components/GitHub.jsx';
+import "../styles/global.css";
+import readingTime from "reading-time";
+import GitHub from "../components/GitHub.jsx";
 import Analytics from "../components/Analytics.astro";
 import Projects from "../components/Projects";
 import HeadCommon from "../components/HeadCommon.astro";
@@ -14,51 +14,54 @@ let description = "nullx's blog";
 
 const unsortedPosts = await Astro.glob("./posts/*.mdx");
 const posts = unsortedPosts.sort(function (a, b) {
-	return (
-		new Date(b.frontmatter.publishDate).valueOf() - new Date(a.frontmatter.publishDate).valueOf()
-	);
+  return (
+    new Date(b.frontmatter.publishDate).valueOf() -
+    new Date(a.frontmatter.publishDate).valueOf()
+  );
 });
 
 const unsortedProjects = (await Astro.glob("./projects/*.md")).map((p) => ({
-	date: p.frontmatter.date,
-	title: p.frontmatter.title,
-	external: p.frontmatter.external,
-	github: p.frontmatter.github,
-	cover: p.frontmatter.cover,
-	tech: p.frontmatter.tech,
-	url: p.url,
-	content: p.rawContent(),
-}))
-
-
+  date: p.frontmatter.date,
+  title: p.frontmatter.title,
+  external: p.frontmatter.external,
+  github: p.frontmatter.github,
+  cover: p.frontmatter.cover,
+  tech: p.frontmatter.tech,
+  url: p.url,
+  content: p.rawContent(),
+}));
 ---
 
 <html lang="en">
+  <head>
+    <BaseHead title={title} description={description} />
+    <Analytics />
+  </head>
 
-<head>
-	<BaseHead title={title} description={description} />
-	<Analytics />
-</head>
-
-<body class="m-3 dark:bg-dark-color">
-	<Header />
-	<div class="mt-3 gap-2 block sm:flex">
-		<div class="w-full sm:w-44 lg:w-72">
-			<GitHub client:load />
-		</div>
-		<div class="flex-auto w-full sm:w-64 gap-4">
-			{
-			posts.map((post) => (
-			<BlogPostPreview title={post.frontmatter.title} description={post.frontmatter.description}
-				publishDate={post.frontmatter.publishDate} url={post.url} tags={post.frontmatter.tags}
-				image={post.frontmatter.image} readingTime={readingTime('').text} />
-			))
-			}
-		</div>
-		<div class="w-full sm:w-44 lg:w-96">
-			<Projects unsortedProjects={unsortedProjects} client:load />
-		</div>
-	</div>
-</body>
-
+  <body class="m-3 dark:bg-dark-color">
+    <Header />
+    <div class="mx-2 mt-3 gap-2 block sm:flex">
+      <div class="w-full sm:w-44 lg:w-72">
+        <GitHub client:load />
+      </div>
+      <div class="flex-auto w-full sm:w-64 gap-4">
+        {
+          posts.map((post) => (
+            <BlogPostPreview
+              title={post.frontmatter.title}
+              description={post.frontmatter.description}
+              publishDate={post.frontmatter.publishDate}
+              url={post.url}
+              tags={post.frontmatter.tags}
+              image={post.frontmatter.image}
+              readingTime={readingTime(post.frontmatter.rawContent).text}
+            />
+          ))
+        }
+      </div>
+      <div class="w-full sm:w-44 lg:w-96">
+        <Projects unsortedProjects={unsortedProjects} client:load />
+      </div>
+    </div>
+  </body>
 </html>
