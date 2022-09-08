@@ -1,6 +1,7 @@
 /* jsxImportSource: astro */
 import "../styles/blog.css";
 import * as React from "preact";
+import { useEffect, useState } from "preact/hooks";
 export interface Project {
   date: string;
   title: string;
@@ -9,7 +10,7 @@ export interface Project {
   cover: string;
   tech: string[];
   url: string;
-  content: string;
+  content: Promise<string>;
 }
 
 export default function ({
@@ -22,12 +23,20 @@ export default function ({
   url,
   content,
 }: Project) {
+  const [compiledContent, setCompiledContent] = useState("");
+
   const publishDateFormated = new Date(date).toLocaleDateString("en-US", {
     weekday: "long",
     year: "numeric",
     month: "short",
     day: "numeric",
   });
+
+  useEffect(() => {
+    (async () => {
+      setCompiledContent(await content);
+    })();
+  }, [content]);
 
   return (
     <div class="w-full rounded-md overflow-hidden mb-2.5 border-solid border-2 bg-white">
@@ -69,7 +78,10 @@ export default function ({
         </div>
         <p class="text-gray-400 z-[1]">{publishDateFormated}</p>
         {cover && <img loading="lazy" src={cover} alt="Cover" />}
-        <p class="text-gray-700 text-base z-[1] mt-3">{content}</p>
+        <p
+          class="text-gray-700 text-base z-[1] mt-3"
+          dangerouslySetInnerHTML={{ __html: compiledContent }}
+        />
       </div>
       <div class="px-6 pt-4 pb-2">
         {tech.map((tag) => (

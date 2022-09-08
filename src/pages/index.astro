@@ -28,7 +28,7 @@ const unsortedProjects = (await Astro.glob("./projects/*.md")).map((p) => ({
   cover: p.frontmatter.cover,
   tech: p.frontmatter.tech,
   url: p.url,
-  content: p.rawContent(),
+  content: p.compiledContent(),
 }));
 ---
 
@@ -38,11 +38,12 @@ const unsortedProjects = (await Astro.glob("./projects/*.md")).map((p) => ({
     <Analytics />
   </head>
 
-  <body class="m-3 dark:bg-dark-color">
+  <body class="dark:bg-dark-color">
     <Header />
     <div class="mx-2 mt-3 gap-2 block sm:flex">
-      <div class="w-full sm:w-44 lg:w-72">
+      <div class="w-full sm:w-44 lg:w-72 mb-3 px-3">
         <GitHub client:load />
+        <Projects unsortedProjects={unsortedProjects} client:load />
       </div>
       <div class="flex-auto w-full sm:w-64 gap-4">
         {
@@ -58,9 +59,6 @@ const unsortedProjects = (await Astro.glob("./projects/*.md")).map((p) => ({
             />
           ))
         }
-      </div>
-      <div class="w-full sm:w-44 lg:w-96">
-        <Projects unsortedProjects={unsortedProjects} client:load />
       </div>
     </div>
   </body>
