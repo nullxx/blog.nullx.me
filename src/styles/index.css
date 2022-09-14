@@ -388,3 +388,66 @@ h2.heading {
   color: var(--theme-text-light);
   margin-bottom: 0.5rem;
 }
+
+.language-js {
+  background: url(/assets/lang/js.png);
+  width: 32px;
+  height: 32px;
+  background-size: cover;
+  border-radius: 0;
+  top: -12px;
+}
+
+.language-html {
+  background: url(/assets/lang/html.png);
+  width: 32px;
+  height: 32px;
+  background-size: cover;
+  border-radius: 0;
+  top: -12px;
+}
+
+.language-ts {
+  background: url(/assets/lang/ts.png);
+  width: 32px;
+  height: 32px;
+  background-size: cover;
+  border-radius: 0;
+  top: -12px;
+}
+
+.language-css {
+  background: url(/assets/lang/css.png);
+  width: 32px;
+  height: 32px;
+  background-size: cover;
+  border-radius: 0;
+  top: -12px;
+}
+
+.language-json {
+  background: url(/assets/lang/json.png);
+  width: 32px;
+  height: 32px;
+  background-size: cover;
+  border-radius: 0;
+  top: -12px;
+}
+
+.language-bash {
+  background: url(/assets/lang/bash.png);
+  width: 32px;
+  height: 32px;
+  background-size: cover;
+  border-radius: 0;
+  top: -12px;
+}
+
+.language-c {
+  background: url(/assets/lang/c.png);
+  width: 32px;
+  height: 32px;
+  background-size: cover;
+  border-radius: 0;
+  top: -12px;
+}
